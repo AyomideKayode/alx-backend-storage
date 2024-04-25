@@ -3,7 +3,7 @@
 
 DELIMITER $$
 
-CREATE TRIGGER valid_email_reset BEFORE UPDATE ON userS
+CREATE TRIGGER valid_email_reset BEFORE UPDATE ON users
 FOR EACH ROW
 BEGIN
     -- Check if email has been changed
