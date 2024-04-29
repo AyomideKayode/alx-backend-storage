@@ -387,10 +387,26 @@ guillaume@ubuntu:~/0x01$
 
 ### 3. [All documents](./3-all) :-
 
+Write a script that lists all documents in the collection `school`:
+
+- The database name will be passed as option of `mongo` command
+
+```bash
+guillaume@ubuntu:~/0x01$ cat 3-all | mongo my_db
+MongoDB shell version v3.6.3
+connecting to: mongodb://127.0.0.1:27017/my_db
+MongoDB server version: 3.6.3
+{ "_id" : ObjectId("5a8fad532b69437b63252406"), "name" : "Holberton school" }
+bye
+guillaume@ubuntu:~/0x01$
+```
+
+### 4. [All matches](./4-match) :-
+
+
 
 | Task | File |
 | ---- | ---- |
-| 4. All matches | [4-match](./4-match) |
 | 5. Count | [5-count](./5-count) |
 | 6. Update | [6-update](./6-update) |
 | 7. Delete by match | [7-delete](./7-delete) |
