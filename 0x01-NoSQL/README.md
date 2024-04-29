@@ -403,6 +403,21 @@ guillaume@ubuntu:~/0x01$
 
 ### 4. [All matches](./4-match) :-
 
+Write a script that lists all documents with `name="Holberton school"` in the collection `school`:
+
+- The database name will be passed as option of `mongo` command
+
+```bash
+guillaume@ubuntu:~/0x01$ cat 4-match | mongo my_db
+MongoDB shell version v3.6.3
+connecting to: mongodb://127.0.0.1:27017/my_db
+MongoDB server version: 3.6.3
+{ "_id" : ObjectId("5a8fad532b69437b63252406"), "name" : "Holberton school" }
+bye
+guillaume@ubuntu:~/0x01$
+```
+
+### 5. [Count](./5-count) :-
 
 
 | Task | File |
