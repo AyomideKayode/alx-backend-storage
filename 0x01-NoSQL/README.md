@@ -368,10 +368,28 @@ bye
 guillaume@ubuntu:~/0x01$
 ```
 
+### 2. [Insert document](./2-insert) :-
+
+Write a script that inserts a document in the collection `school`:
+
+- The document must have one attribute `name` with value “Holberton school”
+- The database name will be passed as option of `mongo` command
+
+```bash
+guillaume@ubuntu:~/0x01$ cat 2-insert | mongo my_db
+MongoDB shell version v3.6.3
+connecting to: mongodb://127.0.0.1:27017/my_db
+MongoDB server version: 3.6.3
+WriteResult({ "nInserted" : 1 })
+bye
+guillaume@ubuntu:~/0x01$
+```
+
+### 3. [All documents](./3-all) :-
+
+
 | Task | File |
 | ---- | ---- |
-| 2. Insert document | [2-insert](./2-insert) |
-| 3. All documents | [3-all](./3-all) |
 | 4. All matches | [4-match](./4-match) |
 | 5. Count | [5-count](./5-count) |
 | 6. Update | [6-update](./6-update) |
