@@ -1,5 +1,7 @@
 # Project: 0x02. Redis basic
 
+![Redis](./main_files/redis%20fancy%20hash%20table.png)
+
 ## Resources
 
 ### Read or watch:-
@@ -59,9 +61,34 @@ b'hello'
 bob@dylan:~$ 
 ```
 
+### 1. [Reading from Redis and recovering original type](./exercise.py) :-
+
+Redis only allows to store string, bytes and numbers (and lists thereof). Whatever you store as single elements, it will be returned as a byte string. Hence if you store `"a"` as a UTF-8 string, it will be returned as `b"a"` when retrieved from the server.
+
+In this exercise we will create a `get` method that take a `key` string argument and an optional `Callable` argument named `fn`. This callable will be used to convert the data back to the desired format.
+
+Remember to conserve the original `Redis.get` behavior if the key does not exist.
+
+Also, implement 2 new methods: `get_str` and `get_int` that will automatically parametrize `Cache.get` with the correct conversion function.
+
+The following code should not raise:
+
+```bash
+cache = Cache()
+
+TEST_CASES = {
+    b"foo": None,
+    123: int,
+    "bar": lambda d: d.decode("utf-8")
+}
+
+for value, fn in TEST_CASES.items():
+    key = cache.store(value)
+    assert cache.get(key, fn=fn) == value
+```
+
 | Task | File |
 | ---- | ---- |
-| 1. Reading from Redis and recovering original type | [exercise.py](./exercise.py) |
 | 2. Incrementing values | [exercise.py](./exercise.py) |
 | 3. Storing lists | [exercise.py](./exercise.py) |
 | 4. Retrieving lists | [exercise.py](./exercise.py) |
