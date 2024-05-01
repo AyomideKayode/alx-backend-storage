@@ -18,7 +18,8 @@ class Cache:
         This method creates an instance of the Redis client
         and flushes the Redis database.
         """
-        self._redis: redis.Redis = redis.Redis()  # Initialize Redis client
+        self._redis = redis.Redis(
+            host='localhost', port=6379, db=0)  # Initialize Redis client
         self._redis.flushdb()  # Flush the Redis database
 
     def store(self, data: Union[str, bytes, int, float]) -> str:
