@@ -9,9 +9,7 @@ import redis  # Import the Redis library for interacting with Redis
 import uuid
 # Import Union from typing module for type annotations
 from typing import Union, Callable
-from functools import cache, wraps
-
-from sqlalchemy import func
+from functools import wraps
 
 
 def count_calls(method: Callable) -> Callable:
@@ -132,32 +130,26 @@ class Cache:
         """
         return self.get(key, fn=int)
 
-    def replay(func):
+    def replay(self, method):
         """
         Display the history of calls of a particular function.
         Args:
-        func (Callable): The function for which the history of
-        calls will be displayed.
+            method (Callable): The method to display the history for.
         """
-        # Get the qualified name of the function
-        func_name = func.__qualname__
+        key = method.__qualname__
+        key_inputs = key + ":inputs"
+        key_outputs = key + ":outputs"
+        # The count_calls decorator, when applied to
+        # the store method, uses a separate key
+        # derived from the method's qualified name
+        # ("Cache.store" in this case) to keep
+        # track of how many times the store method has been called.
+        # This is a different key from the UUIDs used for storing data.
+        count = self.get(key).decode("utf-8")
+        print(f"Cache.{key} was called {count} times:")
+        inputs = self._redis.lrange(key_inputs, 0, -1)
+        outputs = self._redis.lrange(key_outputs, 0, -1)
+        zipped_list = list(zip(inputs, outputs))
 
-        # Get the keys for inputs and outputs lists
-        inputs_key = f"{func_name}:inputs"
-        outputs_key = f"{func_name}:outputs"
-
-        # Retrieve inputs and outputs lists from Redis
-        inputs = cache._redis.lrange(inputs_key, 0, -1)
-        outputs = cache._redis.lrange(outputs_key, 0, -1)
-
-        # Display the number of times the function was called
-        print(f"{func_name} was called {len(inputs)} times:")
-
-        # Iterate over inputs and outputs lists and
-        # display the history of calls
-        for inp, out in zip(inputs, outputs):
-            # Decode input from bytes to string and
-            # remove unnecessary characters
-            input_str = inp.decode("utf-8")[2:-3]
-            # Display the function call with input and output
-            print(f"{func_name}(*({input_str},)) -> {out.decode('utf-8')}")
+        for i, (input, output) in enumerate(zipped_list):
+            print(f"{key} (*{output}) -> {input}")
