@@ -9,6 +9,25 @@ import redis  # Import the Redis library for interacting with Redis
 import uuid
 # Import Union from typing module for type annotations
 from typing import Union, Callable
+from functools import wraps
+
+
+def count_calls(method: Callable) -> Callable:
+    """
+    Decorator to count the number of times a method is called.
+    Args:
+        method (Callable): The method to be decorated.
+    Returns:
+        Callable: Decorated method.
+    """
+    key = method.__qualname__
+
+    @wraps(method)
+    def wrapper(self, *args, **kwargs):
+        # get function name from the wrapped function
+        self._redis.incr(key)
+        return method(self, *args, **kwargs)
+    return wrapper
 
 
 class Cache:
@@ -22,6 +41,8 @@ class Cache:
             host='localhost', port=6379, db=0)  # Initialize Redis client
         self._redis.flushdb()  # Flush the Redis database
 
+    # Decorate the store method with the count_calls decorator
+    @count_calls
     def store(self, data: Union[str, bytes, int, float]) -> str:
         """
         Store data in Redis and return a randomly generated key.
